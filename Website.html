@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>fuel-monitor</title>
+    <style>
+        img { opacity: 1; }
+        img:hover { opacity: 0.5; }
+        .container {
+            text-align: center;
+            margin-top: 50px;
+        }
+        .button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button:hover {
+            opacity:0.5;
+            background-color: #0056b3;
+        }
+        #lastReading {
+            font-family: Arial, sans-serif; /* Change the font family */
+            color: blue; /* Change the text color */
+            font-size: 20px; /* Change the font size */
+            font-weight: bold; /* Change the font weight */
+        }
+    </style>
+</head>
+<body>
+    <div class="container"><h1 >FUEL.com</h1>
+    <p style="color: rgb(18, 159, 161);" title="Im a tooltip">Fuel access at your fingertips...</p>
+    <a href="output.txt" target="_blank">
+        <button class="button">History</button>
+        </a></div>       
+    
+    <div style="text-align: center;">
+        <img id="fuelGauge" src="giphy.gif" style="width: 180px; height: 180px; margin-top: 25px;" alt="fuel gauge" onclick="showLastReading()">
+    </div> 
+    <p id="imageText" style="text-align: center;">click the gauge for your reading.</p>
+    <div id="lastReading" style="text-align: center;"></div>
+    <div style="text-align: center;">
+        <button class="button" onclick="developers()">Developed By:</button>
+    <p id="x"></p>
+    <script>
+        function developers() {
+            document.getElementById("x").innerHTML = "Joel Johnson Kochukoikkal <br> Patric Joe Aji <br> Joseph Babu<br> Joel Abe Thomas";
+        }
+        </script>
+        </div>
+    <script>
+        function getLastLineOfFile(filePath) {
+            return new Promise((resolve, reject) => {
+                fetch(filePath)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.text();
+                    })
+                    .then(text => {
+                        const lines = text.trim().split('\n');
+                        const lastLine = lines[lines.length - 1];
+                        resolve(lastLine);
+                    })
+                    .catch(error => {
+                        reject(error);
+                    });
+            });
+        }
+
+        function showLastReading() {
+            const filePath = "output.txt";
+            getLastLineOfFile(filePath)
+                .then(lastLine => {
+                    document.getElementById('lastReading').innerHTML = lastLine + " ml";
+                    document.getElementById('imageText').style.display = 'none';
+                })
+                .catch(error => {
+                    console.error('Error reading file:', error);
+                });
+        }
+        
+    </script>
+</body>
+</html>
